@@ -1,0 +1,99 @@
+[build-system]
+requires = [
+  "hatchling>=1.9.0",
+  "hatch-vcs",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "lektor-mistune-config"
+description = 'Easy configuration of mistune (Markdown rendering) for Lektor'
+readme = "README.md"
+requires-python = ">=3.7"
+license = "BSD-3-Clause"
+keywords = [
+  "Lektor",
+  "mistune",
+  "Markdown",
+  "configuration",
+  "plugins",
+]
+authors = [
+  { name = "Jeff Dairiki", email = "dairiki@dairiki.org" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Plugins",
+  "Environment :: Web Environment",
+  "Framework :: Lektor",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Text Processing :: Markup :: HTML",
+  "Topic :: Text Processing :: Markup :: Markdown",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/dairiki/lektor-mistune-config#readme"
+Issues = "https://github.com/dairiki/lektor-mistune-config/issues"
+Source = "https://github.com/dairiki/lektor-mistune-config"
+
+[project.entry-points."lektor.plugins"]
+mistune-config = "lektor_mistune_config:MistuneConfigPlugin"
+
+[tool.hatch.build]
+include = [
+  "/lektor_mistune_config.py",
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.envs.default]
+dependencies = [
+  #"lektor>=3.4.0b3",
+  "lektor @ {root:uri}/Lektor-3.4.0b3.dev31+gaefe59bc-py3-none-any.whl",
+  "pytest",
+  "pytest-cov",
+]
+[tool.hatch.envs.default.scripts]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=lektor_mistune_config --cov=tests"
+no-cov = "cov --no-cov"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["37", "38", "39", "310", "311"]
+
+[tool.hatch.envs.dev]
+extra-dependencies = [
+  "mypy==0.971",
+  "flake8",
+  "flake8-bugbear",
+]
+[tool.hatch.envs.dev.scripts]
+lint = [
+  "flake8",
+]
+
+
+[tool.coverage.run]
+branch = true
+parallel = true
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+
+[[tool.mypy.overrides]]
+module = "lektor.*"
+ignore_missing_imports = true
