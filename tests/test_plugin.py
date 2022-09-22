@@ -1,9 +1,9 @@
 import re
 
+import pytest
 from lektor.context import Context
 from lektor.markdown import Markdown
 from lektor.project import Project
-import pytest
 
 
 @pytest.fixture
@@ -49,16 +49,20 @@ def render_markdown(pad):
     return render_markdown
 
 
-@pytest.mark.parametrize("mistune_config, markdown, expect", [
-    # `strikethrough` enabled by default
-    (None, "~~foo~~", "<del>foo</del>"),
-    # Disable all plugins
-    ({"mistune2": {"plugins": ""}},
-     "~~foo~~", "~~foo~~"),
-    # Add additional
-    ({"mistune2": {"extra-plugins": "abbr"}},
-     "Test HAL ~~9000~~\n\n*[HAL]: Hardware Abstraction Layer",
-     r'<abbr title="Hardware .*<del>'),
-])
+@pytest.mark.parametrize(
+    "mistune_config, markdown, expect",
+    [
+        # `strikethrough` enabled by default
+        (None, "~~foo~~", "<del>foo</del>"),
+        # Disable all plugins
+        ({"mistune2": {"plugins": ""}}, "~~foo~~", "~~foo~~"),
+        # Add additional
+        (
+            {"mistune2": {"extra-plugins": "abbr"}},
+            "Test HAL ~~9000~~\n\n*[HAL]: Hardware Abstraction Layer",
+            r'<abbr title="Hardware .*<del>',
+        ),
+    ],
+)
 def test_clear_plugins(markdown, expect, render_markdown):
     assert re.search(expect, render_markdown(markdown))

@@ -2,9 +2,8 @@ from lektor.pluginsystem import Plugin
 
 
 class MistuneConfigPlugin(Plugin):
-    """A Lektor plugin to help configure mistune.
+    """A Lektor plugin to help configure mistune."""
 
-    """
     name = "Mistune Config"
     description = "Easy configuration of mistune Markdown rendering for Lektor"
 
@@ -17,7 +16,7 @@ class MistuneConfigPlugin(Plugin):
         parser_options = getattr(config, "parser_options", None)
         if parser_options is None:
             # FIXME: warn no plugin support
-            return            # running under mistune 0.x — no plugins
+            return  # running under mistune 0.x — no plugins
         if "plugins" not in parser_options:
             # FIXME: warn no plugin support
             return  # early Lektor 3.4.0b — no plugin resolution support
